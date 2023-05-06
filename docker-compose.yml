@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: marcus
+      POSTGRES_USER: marcus
+    volumes:
+      - .:/app/db/install.sql
+      - .:/app/db/data.sql
+      - .:/app/db/structure.sql
+    ports:
+      - "5432:5432"
