@@ -10,7 +10,6 @@ services:
       - "8001:8001"
   db:
     image: postgres
-    restart: always
     environment:
       POSTGRES_PASSWORD: marcus
       POSTGRES_USER: marcus
