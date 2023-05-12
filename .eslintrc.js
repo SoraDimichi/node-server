@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: ["standard-with-typescript", "plugin:prettier/recommended"],
+  overrides: [],
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
@@ -11,8 +12,8 @@ module.exports = {
   },
   rules: {
     "prettier/prettier": "error",
-    "arrow-body-style": "off",
-    "prefer-arrow-callback": "off",
+    // "arrow-body-style": "off",
+    // "prefer-arrow-callback": "on",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
   },
 };

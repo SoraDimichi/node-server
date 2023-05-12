@@ -1,22 +1,17 @@
-"use strict";
+import pg from "pg";
 
-const pg = require("pg");
-
-module.exports = (config) => {
+export default (config) => {
   const pool = new pg.Pool(config);
-
   return (table) => ({
     query(sql, args) {
       return pool.query(sql, args);
     },
-
     read(id, fields = ["*"]) {
       const names = fields.join(", ");
       const sql = `SELECT ${names} FROM ${table}`;
-      if (!id) return pool.query(sql);
+      if (id == null) return pool.query(sql);
       return pool.query(`${sql} WHERE id = $1`, [id]);
     },
-
     async create({ ...record }) {
       const keys = Object.keys(record);
       const nums = new Array(keys.length);
@@ -31,7 +26,6 @@ module.exports = (config) => {
       const sql = `INSERT INTO "${table}" (${fields}) VALUES (${params})`;
       return pool.query(sql, data);
     },
-
     async update(id, { ...record }) {
       const keys = Object.keys(record);
       const updates = new Array(keys.length);
@@ -46,7 +40,6 @@ module.exports = (config) => {
       data.push(id);
       return pool.query(sql, data);
     },
-
     delete(id) {
       const sql = `DELETE FROM ${table} WHERE id = $1`;
       return pool.query(sql, [id]);

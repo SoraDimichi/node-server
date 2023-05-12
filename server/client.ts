@@ -1,4 +1,4 @@
-"use strict";
+import { STRUCTURE } from "../consts";
 
 const transport = {
   ws: (structure, url = "ws://127.0.0.1:8001/") => {
@@ -10,8 +10,8 @@ const transport = {
       const service = structure[serviceName];
       const methods = Object.keys(service);
       for (const methodName of methods) {
-        api[serviceName][methodName] = (...args) =>
-          new Promise((resolve) => {
+        api[serviceName][methodName] = async (...args) =>
+          await new Promise((resolve) => {
             const packet = { name: serviceName, method: methodName, args };
             socket.send(JSON.stringify(packet));
             socket.onmessage = (event) => {
@@ -22,8 +22,9 @@ const transport = {
       }
     }
 
-    socket.addEventListener("open", async () => {
-      const data = await api.user.read(3);
+    socket.addEventListener("open", () => {
+      // @ts-expect-error because there is no type of data
+      const data = api?.user.read(3);
       console.dir({ data });
     });
 
@@ -37,10 +38,10 @@ const transport = {
       const service = structure[serviceName];
       const methods = Object.keys(service);
       for (const methodName of methods) {
-        api[serviceName][methodName] = (...args) =>
-          new Promise((resolve, reject) => {
+        api[serviceName][methodName] = async (...args) =>
+          await new Promise((resolve, reject) => {
             const u = `${url}${methodName}`;
-            fetch(u, {
+            void fetch(u, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(args),
@@ -59,20 +60,9 @@ const transport = {
   },
 };
 
-const scaffold = (url, structure) =>
-  transport[new URL(url).protocol](structure, url);
+type Scaffold = (url: string, structure: typeof STRUCTURE) => Promise<void>;
+const scaffold: Scaffold = async (url, structure) => {
+  await transport[new URL(url).protocol](structure, url);
+};
 
-scaffold("ws://127.0.0.1:8001/", {
-  user: {
-    create: ["record"],
-    read: ["id"],
-    update: ["id", "record"],
-    delete: ["id"],
-    find: ["mask"],
-  },
-  country: {
-    read: ["id"],
-    delete: ["id"],
-    find: ["mask"],
-  },
-});
+void scaffold("ws://127.0.0.1:8001/", STRUCTURE);

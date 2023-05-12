@@ -1,9 +1,7 @@
-"use strict";
+import fs from "node:fs/promises";
+import vm from "node:vm";
 
-const fs = require("node:fs").promises;
-const vm = require("node:vm");
-
-module.exports = (config) => async (filePath, sandbox) => {
+export default (config) => async (filePath, sandbox) => {
   const src = await fs.readFile(filePath, "utf8");
   const code = `'use strict';\n${src}`;
   const script = new vm.Script(code);
