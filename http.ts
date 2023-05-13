@@ -1,4 +1,4 @@
-import http, { type IncomingMessage } from "node:http";
+import http, { type IncomingMessage, type ServerResponse } from "node:http";
 
 type ReceiveArgs = (req: IncomingMessage) => Promise<string>;
 const receiveArgs: ReceiveArgs = async (req) => {
@@ -9,26 +9,32 @@ const receiveArgs: ReceiveArgs = async (req) => {
   return parsedData;
 };
 
-export default (port: number) => (routing: string) => {
+export default (port: number) => (routing: any) => {
   http
-    .createServer((req, res) => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    .createServer(async (req: IncomingMessage, res: ServerResponse) => {
       const { url = "", socket } = req;
       const [name, method, id] = url.substring(1).split("/");
       const entity = routing[name];
-      if (entity != null) return res.end("Not found");
+      if (entity == null) {
+        res.statusCode = 404;
+        return res.end("Not found");
+      }
       const handler = entity[method];
-      if (handler != null) return res.end("Not found");
-      const src = String(handler);
+      if (handler == null) {
+        res.statusCode = 404;
+        return res.end("Not found");
+      }
+      const src = handler.toString();
       const signature = src.substring(0, src.indexOf(")"));
       const args: string[] = [];
-      if (signature.includes("(id")) args.push(id);
-      if (signature.includes("{")) {
-        void receiveArgs(req).then((data) => args.push(data));
-      }
+      if (signature.includes("(id") === true) args.push(id);
+      if (signature.includes("{") === true) args.push(await receiveArgs(req));
       console.log(
-        `${socket.remoteAddress ?? "UNKNOWN ADRESS"} ${method} ${url}`
+        `${socket.remoteAddress ?? "unknown address"} ${method} ${url}`
       );
-      handler(...args).then((result) => res.end(JSON.stringify(result.rows)));
+      const result = await handler(...args);
+      return res.end(JSON.stringify(result.rows));
     })
     .listen(port);
 

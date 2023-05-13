@@ -13,9 +13,15 @@ export const STRUCTURE = {
     find: ["mask"],
   },
 };
-export const API = {
+
+type Api = {
+  port: number;
+  transport: "ws" | "http";
+};
+
+export const API: Api = {
   port: 8001,
-  transport: "http",
+  transport: "ws",
 };
 export const DB = {
   host: "127.0.0.1",
