@@ -1,0 +1,49 @@
+{
+  "name": "node-server",
+  "version": "0.0.0",
+  "description": "How to use DDD, SOLID, GRASP and GoF in JavaScript and Node.js",
+  "license": "MIT",
+  "module": "esnext",
+  "private": true,
+  "main": "main.js",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "dev": "nodemon --watch './**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node ./main.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoraDimichi/node-server.git"
+  },
+  "author": "Sorokin Dmitry",
+  "bugs": {
+    "url": "https://github.com/SoraDimichi/node-server/issues"
+  },
+  "homepage": "https://github.com/SoraDimichi/node-server#readme",
+  "dependencies": {
+    "fastify": "^4.17.0",
+    "pg": "^8.8.0",
+    "ws": "^8.12.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^18.15.13",
+    "@types/pg": "^8.6.6",
+    "@types/ws": "^8.5.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "msw": "^1.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
+  }
+}
