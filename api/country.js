@@ -1,4 +1,4 @@
-const country = db('country');
+const country = db("country");
 
 ({
   async read(id) {
@@ -7,7 +7,7 @@ const country = db('country');
   },
 
   async find(mask) {
-    const sql = 'SELECT * from country where name like $1';
+    const sql = "SELECT * from country where name like $1";
     return await country.query(sql, [mask]);
   },
 });

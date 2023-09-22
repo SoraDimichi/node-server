@@ -1,9 +1,20 @@
-FROM node:18
+FROM node:18-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
-COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install
-# Copy the rest of the application code to the container
-COPY . .
+
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm build
+RUN ls
+
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 EXPOSE 8000 8001
-CMD [ "yarn", "run", "dev"]
+CMD [ "pnpm", "dev" ]

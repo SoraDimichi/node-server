@@ -10,7 +10,8 @@
     "node": "18"
   },
   "scripts": {
-    "dev": "nodemon --watch './**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node ./main.ts'"
+    "build": "cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc",
+    "dev": "nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist' --exec 'pnpm build && node ./dist/main.js'"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,6 @@
     "ws": "^8.12.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.15.13",
     "@types/pg": "^8.6.6",

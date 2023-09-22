@@ -8,7 +8,7 @@ const serveStatic = (root: string, port: number): void => {
       void (async () => {
         if (typeof req.url !== "string") return;
         const url = req.url === "/" ? "/index.html" : req.url;
-        const filePath = path.join(root, url);
+        const filePath = path.join(__dirname, root, url);
         try {
           const data = await fs.promises.readFile(filePath);
           res.end(data);

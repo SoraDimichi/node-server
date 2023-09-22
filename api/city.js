@@ -1,1 +1,1 @@
-db('city');
+db("city");

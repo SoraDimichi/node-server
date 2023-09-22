@@ -21,18 +21,18 @@ const sandbox: Sandbox = {
   common: { hash },
 };
 
-const apiPath: string = path.join(process.cwd(), "./api");
+const apiPath: string = "api";
 const routing: Record<string, any> = {};
 
 void (async () => {
   const files: string[] = await fsp.readdir(apiPath);
   for (const fileName of files) {
     if (!fileName.endsWith(".js")) continue;
-    const filePath: string = path.join(apiPath, fileName);
+    const filePath: string = path.join(__dirname, apiPath, fileName);
     const serviceName: string = path.basename(fileName, ".js");
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer("./static", 8000);
+  staticServer("static", 8000);
   server(routing, 8001);
 })();

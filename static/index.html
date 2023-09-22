@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <script src="client.js"></script>
   <head>
     <title>NODE SERVER</title>
   </head>
   <body>
     hi
   </body>
-  <script type="module">
-    import {loadModule} from 'https://klesun.github.io/ts-browser/src/ts-browser.js';
-    loadModule('./client.ts').then(indexModule => {
-        return indexModule.default(document.getElementById('composeCont'));
-    });
-  </script>
 </html>
