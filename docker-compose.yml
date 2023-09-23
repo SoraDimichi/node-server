@@ -3,6 +3,14 @@ services:
     build: .
     env_file:
       - .env
+    environment:
+      API_PORT: ${API_PORT}
+      STAT_PORT: ${STAT_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
     volumes:
@@ -15,6 +23,9 @@ services:
     image: postgres
     env_file:
       - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
     volumes:
       - .:/app/db/install.sql
       - .:/app/db/data.sql
