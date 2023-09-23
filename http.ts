@@ -14,7 +14,7 @@ const receiveArgs = async (req: http.IncomingMessage): Promise<any> => {
   return JSON.parse(data);
 };
 
-const createServer = (routing: Routing, port: number): void => {
+const startServer = (routing: Routing, port: number): void => {
   http
     .createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
       void (async () => {
@@ -41,4 +41,4 @@ const createServer = (routing: Routing, port: number): void => {
   console.log(`API on port ${port}`);
 };
 
-export default createServer;
+export default startServer;
