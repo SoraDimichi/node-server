@@ -1,16 +1,19 @@
-import fs from "node:fs";
+import { readFile } from "node:fs/promises";
 import http from "node:http";
-import path from "node:path";
+import { join } from "node:path";
 
-const serveStatic = (root: string, port: number): void => {
+type StaticConfig = { root: string; port: number };
+
+const serveStatic = (config: StaticConfig): void => {
+  const { root, port } = config;
   http
     .createServer((req, res) => {
       void (async () => {
         if (typeof req.url !== "string") return;
         const url = req.url === "/" ? "/index.html" : req.url;
-        const filePath = path.join(__dirname, root, url);
+        const filePath = join(__dirname, root, url);
         try {
-          const data = await fs.promises.readFile(filePath);
+          const data = await readFile(filePath);
           res.end(data);
         } catch (err) {
           res.statusCode = 404;

@@ -1,6 +1,6 @@
-import { promises as fsp } from "node:fs";
-import * as path from "node:path";
-import db from "./db";
+import { readdir } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { createDatabaseInterface } from "./db";
 import hash from "./hash";
 import load from "./load";
 import logger from "./logger";
@@ -9,30 +9,50 @@ import server from "./ws";
 
 type Sandbox = {
   console: typeof logger;
-  db: typeof db;
+  db: ReturnType<typeof createDatabaseInterface>;
   common: {
     hash: typeof hash;
   };
 };
 
-const sandbox: Sandbox = {
-  console: logger,
-  db: Object.freeze(db),
-  common: { hash },
+const config = {
+  api: {
+    port: 8001,
+    root: "api",
+  },
+  stat: {
+    port: 8000,
+    root: "static",
+  },
+  db: {
+    host: "127.0.0.1",
+    port: 5432,
+    database: "example",
+    user: "marcus",
+    password: "marcus",
+  },
 };
 
-const apiPath: string = "api";
-const routing: Record<string, any> = {};
+void (async (c: typeof config) => {
+  const { db, api, stat } = c;
 
-void (async () => {
-  const files: string[] = await fsp.readdir(apiPath);
+  const sandbox: Sandbox = {
+    console: logger,
+    db: createDatabaseInterface(db),
+    common: { hash },
+  };
+
+  const dirPath = join(__dirname, api.root);
+  const files: string[] = await readdir(dirPath);
+  const routing: Record<string, any> = {};
   for (const fileName of files) {
     if (!fileName.endsWith(".js")) continue;
-    const filePath: string = path.join(__dirname, apiPath, fileName);
-    const serviceName: string = path.basename(fileName, ".js");
+    const filePath: string = join(dirPath, fileName);
+    const serviceName: string = basename(fileName, ".js");
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer("static", 8000);
-  server(routing, 8001);
-})();
+  staticServer(stat);
+
+  server(routing, api.port);
+})(config);
