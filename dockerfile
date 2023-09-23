@@ -1,6 +1,9 @@
 FROM node:18-slim AS base
 ENV PNPM_HOME="/pnpm"
+ENV API_PORT=${API_PORT}
+ENV STAT_PORT=${STAT_PORT}
 ENV PATH="$PNPM_HOME:$PATH"
+ENV ENV=${ENV}
 RUN corepack enable
 COPY . /app
 WORKDIR /app
@@ -17,4 +20,3 @@ FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 EXPOSE 8000 8001
-CMD [ "pnpm", "dev" ]

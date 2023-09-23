@@ -5,13 +5,14 @@
   "license": "MIT",
   "module": "esnext",
   "private": true,
-  "main": "main.js",
+  "main": "index",
   "engines": {
     "node": "18"
   },
   "scripts": {
-    "build": "cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc",
-    "dev": "nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist' --exec 'pnpm build && node ./dist/main.js'"
+    "production": "pnpm build && node ./dist/index.js",
+    "development": "nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist/' --ignore 'log/' --exec 'pnpm build && node ./dist/index.js'",
+    "build": "mkdir -p dist/static && cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc"
   },
   "repository": {
     "type": "git",

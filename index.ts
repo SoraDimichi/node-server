@@ -17,19 +17,19 @@ type Sandbox = {
 
 const config = {
   api: {
-    port: 8001,
+    port: Number(process.env.API_PORT as string),
     root: "api",
   },
   stat: {
-    port: 8000,
+    port: Number(process.env.STAT_PORT as string),
     root: "static",
   },
   db: {
-    host: "127.0.0.1",
-    port: 5432,
-    database: "example",
-    user: "marcus",
-    password: "marcus",
+    host: process.env.DB_HOST as string,
+    port: Number(process.env.DB_PORT as string),
+    database: process.env.DB_NAME as string,
+    user: process.env.DB_USER as string,
+    password: process.env.DB_PASSWORD as string,
   },
 };
 

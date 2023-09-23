@@ -1,21 +1,23 @@
 services:
   app:
     build: .
+    env_file:
+      - .env
     depends_on:
       - db
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
-      - "8001:8001"
+      - "${STAT_PORT}:${STAT_PORT}"
+      - "${API_PORT}:${API_PORT}"
+    command: ["pnpm", "${ENV}"]
   db:
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: marcus
-      POSTGRES_USER: marcus
+    env_file:
+      - .env
     volumes:
       - .:/app/db/install.sql
       - .:/app/db/data.sql
       - .:/app/db/structure.sql
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
