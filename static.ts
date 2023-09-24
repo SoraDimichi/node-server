@@ -1,10 +1,9 @@
 import { readFile } from "node:fs/promises";
 import http from "node:http";
 import { join } from "node:path";
+import { type StaticOptions } from "./config";
 
-type StaticConfig = { root: string; port: number };
-
-const serveStatic = (config: StaticConfig): void => {
+const serveStatic = (config: StaticOptions): void => {
   const { root, port } = config;
   http
     .createServer((req, res) => {

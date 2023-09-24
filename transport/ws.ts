@@ -1,11 +1,14 @@
 import { Server, type AddressInfo } from "ws";
-import logger from "./logger";
 
 type RoutingEntity = Record<string, (...args: any[]) => Promise<unknown>>;
 
 type Routing = Record<string, RoutingEntity>;
 
-const startServer = (routing: Routing, port: number): void => {
+const startServer = (
+  routing: Routing,
+  port: number,
+  logger = console
+): void => {
   const ws = new Server({ port });
 
   ws.on("connection", (connection, req) => {

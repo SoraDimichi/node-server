@@ -11,6 +11,7 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      TRANSPORT: ${TRANSPORT}
       ENV: ${ENV}
     depends_on:
       - db

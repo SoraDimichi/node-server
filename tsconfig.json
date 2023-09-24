@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
+    "noPropertyAccessFromIndexSignature": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "esModuleInterop": true,

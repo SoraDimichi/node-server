@@ -14,7 +14,11 @@ const receiveArgs = async (req: http.IncomingMessage): Promise<any> => {
   return JSON.parse(data);
 };
 
-const startServer = (routing: Routing, port: number): void => {
+const startServer = (
+  routing: Routing,
+  port: number,
+  logger = console
+): void => {
   http
     .createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
       void (async () => {
@@ -31,14 +35,14 @@ const startServer = (routing: Routing, port: number): void => {
         if (signature.includes("(id")) args.push(id);
         if (signature.includes("{")) args.push(await receiveArgs(req));
 
-        console.log(`${String(socket.remoteAddress)} ${method} ${url}`);
+        logger.log(`${String(socket.remoteAddress)} ${method} ${url}`);
         const result = await handler(...args);
         return res.end(JSON.stringify(result.rows));
       })();
     })
     .listen(port);
 
-  console.log(`API on port ${port}`);
+  logger.log(`API on port ${port}`);
 };
 
 export default startServer;
