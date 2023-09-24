@@ -16,10 +16,8 @@ type Sandbox = {
   };
 };
 
-const server = async (options: ApiOptions) => {
+const server = async (options: ApiOptions, logger: any) => {
   const { port, root, transport, db, loader } = options;
-
-  const logger = log(options.logger);
 
   const sandbox: Sandbox = {
     console: logger,
@@ -38,10 +36,12 @@ const server = async (options: ApiOptions) => {
     routing[serviceName] = await load(loader)(filePath, sandbox);
   }
 
-  store[transport](routing, port, logger as any);
+  store[transport](routing, port, logger);
 };
 
 void (async (options) => {
-  await server(options.api);
-  staticServer(options.static);
+  const l = log(options.logger);
+
+  await server(options.api, l);
+  staticServer(options.static, l);
 })(config);

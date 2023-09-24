@@ -3,7 +3,7 @@ import http from "node:http";
 import { join } from "node:path";
 import { type StaticOptions } from "./config";
 
-const serveStatic = (config: StaticOptions): void => {
+const serveStatic = (config: StaticOptions, logger: any): void => {
   const { root, port } = config;
   http
     .createServer((req, res) => {
@@ -22,7 +22,7 @@ const serveStatic = (config: StaticOptions): void => {
     })
     .listen(port);
 
-  console.log(`Static on port ${port}`);
+  logger.log(`Static on port ${port}`);
 };
 
 export default serveStatic;

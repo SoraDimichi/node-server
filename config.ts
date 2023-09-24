@@ -14,21 +14,21 @@ const config: AppOptions = {
       timeout: 5000,
       displayErrors: false,
     },
-    logger: {
-      out: "logs",
-      colors: {
-        info: "\x1b[1;37m",
-        debug: "\x1b[1;33m",
-        error: "\x1b[0;31m",
-        system: "\x1b[1;34m",
-        access: "\x1b[1;38m",
-      },
-      datetimeLength: 19,
-    },
   },
   static: {
     port: Number(process.env.STAT_PORT),
     root: "static",
+  },
+  logger: {
+    out: "logs",
+    colors: {
+      info: "\x1b[1;37m",
+      debug: "\x1b[1;33m",
+      error: "\x1b[0;31m",
+      system: "\x1b[1;34m",
+      access: "\x1b[1;38m",
+    },
+    datetimeLength: 19,
   },
 } as const;
 
@@ -57,7 +57,6 @@ export type ApiOptions = {
   transport: "http" | "ws";
   db: DatabaseOptions;
   loader: LoaderOptions;
-  logger: LoggerOptions;
 };
 
 export type StaticOptions = { root: string; port: number };
@@ -65,6 +64,7 @@ export type StaticOptions = { root: string; port: number };
 export type AppOptions = {
   api: ApiOptions;
   static: StaticOptions;
+  logger: LoggerOptions;
 };
 
 export default config;
