@@ -40,6 +40,7 @@ const server = async (options: ApiOptions, logger: any) => {
 };
 
 void (async (options) => {
+  console.log(options);
   const l = log(options.logger);
 
   await server(options.api, l);

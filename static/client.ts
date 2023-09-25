@@ -50,7 +50,7 @@ const api = scaffold({
 
 socket.addEventListener("open", () => {
   void (async () => {
-    const data = await api.user.read(3);
+    const data = await api["user"]["read"](3);
     console.dir({ data });
   })();
 });

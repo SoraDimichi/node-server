@@ -1,7 +1,7 @@
 const config: AppOptions = {
   api: {
     port: Number(process.env.API_PORT),
-    transport: process.env.TRANSPORT,
+    transport: "http",
     root: "api",
     db: {
       port: Number(process.env.DB_PORT),
@@ -20,7 +20,7 @@ const config: AppOptions = {
     root: "static",
   },
   logger: {
-    out: "logs",
+    out: "log",
     colors: {
       info: "\x1b[1;37m",
       debug: "\x1b[1;33m",

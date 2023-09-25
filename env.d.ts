@@ -1,6 +1,5 @@
 declare namespace NodeJS {
   type ProcessEnv = {
-    TRANSPORT: "http" | "ws";
     ENV: "development" | "production";
     API_PORT: string;
     STAT_PORT: string;
