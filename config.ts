@@ -10,10 +10,6 @@ const config: AppOptions = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
     },
-    loader: {
-      timeout: 5000,
-      displayErrors: false,
-    },
   },
   static: {
     port: Number(process.env.STAT_PORT),
@@ -46,17 +42,11 @@ export type DatabaseOptions = {
   password: string;
 };
 
-export type LoaderOptions = {
-  timeout: number;
-  displayErrors: boolean;
-};
-
 export type ApiOptions = {
   port: number;
   root: string;
   transport: "http" | "ws";
   db: DatabaseOptions;
-  loader: LoaderOptions;
 };
 
 export type StaticOptions = { root: string; port: number };

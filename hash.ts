@@ -9,4 +9,4 @@ const hash = async (password: string): Promise<string> =>
     });
   });
 
-export default hash;
+export { hash };
