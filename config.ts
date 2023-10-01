@@ -1,7 +1,7 @@
 const config: AppOptions = {
   api: {
     port: Number(process.env.API_PORT),
-    transport: "http",
+    transport: process.env.TRANSPORT,
     root: "api",
     db: {
       port: Number(process.env.DB_PORT),
