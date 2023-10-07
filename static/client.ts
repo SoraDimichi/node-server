@@ -82,6 +82,4 @@ const scaffold = (url: string) => {
   return { http, ws }[protocol](url);
 };
 
-void (async () => {
-  await scaffold("http://localhost:8001")(structure);
-})();
+void (async () => await scaffold("http://localhost:8001")(structure))();
