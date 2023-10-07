@@ -1,56 +1,85 @@
-type ServiceMethod = Record<string, string[]>;
-type ServiceStructure = Record<string, ServiceMethod>;
-type Packet = { name: string; method: string; args: any[] };
+type Structure = Record<string, Record<string, string[]>>;
 
-const socket: WebSocket = new WebSocket("ws://127.0.0.1:8001/");
+type Api = Record<string, Record<string, (...args: any[]) => Promise<any>>>;
 
-const scaffold = (structure: ServiceStructure) => {
-  const api: Record<
-    string,
-    Record<string, (...args: any[]) => Promise<unknown>>
-  > = {};
-  const services = Object.keys(structure);
-  for (const serviceName of services) {
-    api[serviceName] = {};
-    const service = structure[serviceName];
-    const methods = Object.keys(service);
-    for (const methodName of methods) {
-      api[serviceName][methodName] = async (...args: any[]) =>
-        await new Promise((resolve) => {
-          const packet: Packet = {
-            name: serviceName,
-            method: methodName,
-            args,
-          };
-          socket.send(JSON.stringify(packet));
-          socket.onmessage = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-            resolve(data);
-          };
-        });
+const http =
+  (url: string) =>
+  async (structure: Structure): Promise<Api> => {
+    const api: Api = {};
+    const services = Object.keys(structure);
+    for (const name of services) {
+      api[name] = {};
+      const service = structure[name];
+      const methods = Object.keys(service);
+      for (const method of methods) {
+        api[name][method] = async (...args: any[]) =>
+          await new Promise((resolve, reject) => {
+            fetch(`${url}/api/${name}/${method}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ args }),
+            })
+              .then((res) => {
+                if (res.status === 200) resolve(res.json());
+                else reject(new Error(`Status Code: ${res.status}`));
+              })
+              .catch((error) => {
+                console.error(error);
+                reject(error);
+              });
+          });
+      }
     }
-  }
-  return api;
+    return await Promise.resolve(api);
+  };
+
+const ws =
+  (url: string) =>
+  async (structure: Structure): Promise<Api> => {
+    const socket = new WebSocket(url);
+    const api: Api = {};
+    const services = Object.keys(structure);
+    for (const name of services) {
+      api[name] = {};
+      const service = structure[name];
+      const methods = Object.keys(service);
+      for (const method of methods) {
+        api[name][method] = async (...args: any[]) =>
+          await new Promise((resolve) => {
+            const packet = { name, method, args };
+            socket.send(JSON.stringify(packet));
+            socket.onmessage = (event) => {
+              const data = JSON.parse(event.data);
+              resolve(data);
+            };
+          });
+      }
+    }
+    return await new Promise((resolve) => {
+      socket.addEventListener("open", () => {
+        resolve(api);
+      });
+    });
+  };
+
+const scaffold = (url: string) => {
+  const protocol = url.startsWith("ws:") ? "ws" : "http";
+  return { http, ws }[protocol](url);
 };
 
-const api = scaffold({
-  user: {
-    create: ["record"],
-    read: ["id"],
-    update: ["id", "record"],
-    delete: ["id"],
-    find: ["mask"],
-  },
-  country: {
-    read: ["id"],
-    delete: ["id"],
-    find: ["mask"],
-  },
-});
-
-socket.addEventListener("open", () => {
-  void (async () => {
-    const data = await api["user"]["read"](3);
-    console.dir({ data });
-  })();
-});
+void (async () => {
+  await scaffold("http://localhost:8001")({
+    user: {
+      create: ["record"],
+      read: ["id"],
+      update: ["id", "record"],
+      delete: ["id"],
+      find: ["mask"],
+    },
+    country: {
+      read: ["id"],
+      delete: ["id"],
+      find: ["mask"],
+    },
+  });
+})();
