@@ -21,7 +21,7 @@ const http =
             })
               .then((res) => {
                 if (res.status === 200) resolve(res.json());
-                else reject(new Error(`Status Code: ${res.status}`));
+                else throw new Error(`Status Code: ${res.status}`);
               })
               .catch((error) => {
                 console.error(error);
