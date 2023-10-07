@@ -1,6 +1,21 @@
-type Structure = Record<string, Record<string, string[]>>;
-
 type Api = Record<string, Record<string, (...args: any[]) => Promise<any>>>;
+
+const structure = {
+  user: {
+    create: ["record"],
+    read: ["id"],
+    update: ["id", "record"],
+    delete: ["id"],
+    find: ["mask"],
+  },
+  country: {
+    read: ["id"],
+    delete: ["id"],
+    find: ["mask"],
+  },
+} as const;
+
+type Structure = typeof structure;
 
 const http =
   (url: string) =>
@@ -68,18 +83,5 @@ const scaffold = (url: string) => {
 };
 
 void (async () => {
-  await scaffold("http://localhost:8001")({
-    user: {
-      create: ["record"],
-      read: ["id"],
-      update: ["id", "record"],
-      delete: ["id"],
-      find: ["mask"],
-    },
-    country: {
-      read: ["id"],
-      delete: ["id"],
-      find: ["mask"],
-    },
-  });
+  await scaffold("http://localhost:8001")(structure);
 })();
