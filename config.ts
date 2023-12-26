@@ -2,7 +2,7 @@ const config: AppOptions = {
   api: {
     port: Number(process.env.API_PORT),
     transport: process.env.TRANSPORT,
-    framework: "native",
+    framework: process.env.FRAMEWORK,
     root: "api",
     db: {
       port: Number(process.env.DB_PORT),

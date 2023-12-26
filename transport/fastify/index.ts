@@ -1,4 +1,4 @@
-import http from './http'
-import ws from './ws'
+import http from "./http";
+import ws from "./ws";
 
-export default { http, ws }
+export default { http, ws };

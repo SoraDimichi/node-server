@@ -1,3 +1,3 @@
-const startServer = () => undefined
+const startServer = () => undefined;
 
-export default startServer
+export default startServer;
