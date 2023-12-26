@@ -11,7 +11,7 @@ module.exports = {
     project: "./tsconfig.json",
   },
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     // "arrow-body-style": "off",
     // "prefer-arrow-callback": "on",
     "@typescript-eslint/explicit-function-return-type": "off",
