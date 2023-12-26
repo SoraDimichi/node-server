@@ -1,4 +1,4 @@
-import http from "./http";
-import ws from "./ws";
+import fastify from './fastify'
+import native from './native'
 
-export default { http, ws };
+export default { fastify, native }

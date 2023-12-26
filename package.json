@@ -12,7 +12,7 @@
   "scripts": {
     "production": "pnpm build && node ./dist/index.js",
     "development": "nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist/' --ignore 'log/' --exec 'pnpm build && node ./dist/index.js'",
-    "build": "mkdir -p dist/static && cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc"
+    "build": "pnpm install && mkdir -p dist/static && cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc"
   },
   "repository": {
     "type": "git",
