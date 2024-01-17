@@ -23,7 +23,23 @@ const startServer = (
     .createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
       void (async () => {
         const { url, socket } = req;
-
+        // Set CORS headers to allow requests from any origin
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader(
+          "Access-Control-Allow-Methods",
+          "GET, POST, PUT, DELETE, OPTIONS"
+        );
+        res.setHeader(
+          "Access-Control-Allow-Headers",
+          "X-Requested-With,content-type"
+        );
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        // Handle preflight requests for CORS
+        if (req.method === "OPTIONS") {
+          res.writeHead(204);
+          res.end();
+          return;
+        }
         if (url == null) return res.end("Not found 1");
         const [name, method, id] = url.substring(1).split("/");
         const entity = routing[name];
@@ -35,8 +51,7 @@ const startServer = (
         const args: any[] = [];
         if (signature.includes("(id")) args.push(id);
         if (signature.includes("{")) args.push(await receiveArgs(req));
-
-        logger.log(`${String(socket.remoteAddress)} ${"read"} ${url}`);
+        logger.log(`${String(socket.remoteAddress)} ${method} ${url}`);
         const result = await handler(...args);
         return res.end(JSON.stringify(result.rows));
       })();

@@ -21,4 +21,8 @@ export default {
     const sql = "SELECT login from users where login like $1";
     return await users.query(sql, [mask]);
   },
+  async readAll() {
+    const sql = "SELECT * from users";
+    return await users.query(sql);
+  },
 };

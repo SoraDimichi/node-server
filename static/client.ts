@@ -29,7 +29,7 @@ const http =
       for (const method of methods) {
         api[name][method] = async (...args: any[]) =>
           await new Promise((resolve, reject) => {
-            fetch(`${url}/api/${name}/${method}`, {
+            fetch(`${url}/${name}/${method}/${args[0]["id"]}`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ args }),
@@ -47,7 +47,6 @@ const http =
     }
     return await Promise.resolve(api);
   };
-
 const ws =
   (url: string) =>
   async (structure: Structure): Promise<Api> => {
@@ -82,4 +81,7 @@ const scaffold = (url: string) => {
   return { http, ws }[protocol](url);
 };
 
-void (async () => await scaffold("http://localhost:8001")(structure))();
+void (async () => {
+  const getCity = await scaffold("http://localhost:8001")(structure);
+  await getCity["country"]["read"]({ id: 1 });
+})();
