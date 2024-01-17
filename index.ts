@@ -13,20 +13,18 @@ const server = async (options: ApiOptions, logger: any) => {
   const dirPath = join(__dirname, root);
   const files: string[] = await readdir(dirPath);
   const routing: Record<string, any> = {};
-
   for (const fileName of files) {
     if (!fileName.endsWith(".js")) continue;
     const filePath: string = join(dirPath, fileName);
     const serviceName: string = basename(fileName, ".js");
-    routing[serviceName] = import(filePath);
+    const routeImport = await import(filePath);
+    routing[serviceName] = routeImport.default ?? routeImport;
   }
-
   store[framework][transport](routing, port, logger);
 };
 
 void (async (options) => {
   const l = log(options.logger);
-
   await server(options.api, l);
   staticServer(options.static, l);
 })(config);

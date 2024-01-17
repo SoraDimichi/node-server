@@ -10,5 +10,7 @@ declare namespace NodeJS {
     DB_PASSWORD: string;
     FRAMEWORK: "native" | "fastify";
     TRANSPORT: "http" | "ws";
+    POSTGRES_PASSWORD: string;
+    POSTGRES_USER: string;
   };
 }

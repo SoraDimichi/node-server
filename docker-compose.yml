@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   app:
     build: .
@@ -11,7 +12,6 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      TRANSPORT: ${TRANSPORT}
       ENV: ${ENV}
     depends_on:
       - db
@@ -21,16 +21,20 @@ services:
       - "${STAT_PORT}:${STAT_PORT}"
       - "${API_PORT}:${API_PORT}"
     command: ["pnpm", "${ENV}"]
+
   db:
     image: postgres
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
-      - .:/app/db/install.sql
-      - .:/app/db/data.sql
-      - .:/app/db/structure.sql
+      - db-data:/var/lib/postgresql/data
+      - ./setup.sh:/docker-entrypoint-initdb.d/setup.sh
+      - ./db:/db
     ports:
       - "${DB_PORT}:${DB_PORT}"
+volumes:
+  db-data:
