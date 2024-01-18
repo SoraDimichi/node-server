@@ -58,7 +58,7 @@ const startServer = (
     })
     .listen(port);
 
-  logger.log(`API on port ${port}`);
+  logger.log(`API native on port ${port}`);
 };
 
 export default startServer;
