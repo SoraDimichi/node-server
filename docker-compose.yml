@@ -20,7 +20,7 @@ services:
     ports:
       - "${STAT_PORT}:${STAT_PORT}"
       - "${API_PORT}:${API_PORT}"
-    command: ["pnpm", "${ENV}"]
+    command: ["yarn", "${ENV}"]
 
   db:
     image: postgres

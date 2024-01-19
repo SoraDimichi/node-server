@@ -1,22 +1,18 @@
+# Base Image
 FROM node:18-slim AS base
-ENV PNPM_HOME="/pnpm"
+# Environment Variables
 ENV API_PORT=${API_PORT}
 ENV STAT_PORT=${STAT_PORT}
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="/node_modules/.bin:$PATH"
 ENV ENV=${ENV}
-RUN corepack enable
+# Copying Files
 COPY . /app
+# Setting Work Directory
 WORKDIR /app
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-
-FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm build
+# Production Dependencies
+RUN yarn build
 RUN ls
 
-FROM base
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
+# Final Stage
 EXPOSE 8000 8001

@@ -10,9 +10,9 @@
     "node": "18"
   },
   "scripts": {
-    "production": "pnpm build && node ./dist/index.js",
-    "development": "nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist/' --ignore 'log/' --exec 'pnpm build && node ./dist/index.js'",
-    "build": "pnpm install && mkdir -p dist/static && cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc"
+    "production": "yarn build && node ./dist/index.js",
+    "development": "yarn build && nodemon --watch './**' --ext 'ts,json,html' --ignore 'dist/' --ignore 'log/' --exec 'yarn build && node ./dist/index.js'",
+    "build": "yarn install --frozen-lockfile && mkdir -p dist/static && cp static/index.html dist/static/index.html && cp static/favicon.ico dist/static/favicon.ico && tsc"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/SoraDimichi/node-server#readme",
   "dependencies": {
-    "fastify": "^4.17.0",
+    "fastify": "^4.25.2",
     "pg": "^8.8.0",
     "ws": "^8.12.0"
   },
@@ -42,7 +42,6 @@
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
-    "msw": "^1.2.1",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
