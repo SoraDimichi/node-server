@@ -31,12 +31,12 @@ const startServer = (routing: Routing, port: number, logger = console) => {
         url: `/${name}/${method}/:id?`,
         handler: async (request, reply) => {
           const { url } = request;
-          if (url == null) return reply.send("Not found 1");
+          if (url == null) return await reply.send("Not found 1");
           const [name, method, id] = url.substring(1).split("/");
           const entity = routing[name];
-          if (entity == null) return reply.send("Not found 3");
+          if (entity == null) return await reply.send("Not found 3");
           const handler = entity[`${method}`];
-          if (handler == null) return reply.send("Not found 2");
+          if (handler == null) return await reply.send("Not found 2");
           const src = handler.toString();
           const signature = src.substring(0, src.indexOf(")"));
           const args: any[] = [];
@@ -44,7 +44,7 @@ const startServer = (routing: Routing, port: number, logger = console) => {
           if (signature.includes("{")) args.push(await receiveArgs(request));
           const result = await handler(...args);
 
-          reply.send(result.rows);
+          await reply.send(result.rows);
         },
       });
     });
