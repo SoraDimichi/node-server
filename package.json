@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/SoraDimichi/node-server#readme",
   "dependencies": {
+    "@fastify/websocket": "^8.3.1",
     "fastify": "^4.25.2",
     "pg": "^8.8.0",
     "ws": "^8.12.0"

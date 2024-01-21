@@ -20,8 +20,9 @@ const crud = (table: string) => ({
   },
   async read(id?: number, fields: string[] = ["*"]): Promise<QueryResult> {
     const names = fields.join(", ");
+    console.log(id, fields, table);
     const sql = `SELECT ${names} FROM ${table}`;
-    if (id != null) return await getPool().query(sql);
+    if (id === null) return await getPool().query(sql);
     return await getPool().query(`${sql} WHERE id = $1`, [id]);
   },
   async create(record: Rec): Promise<QueryResult> {
