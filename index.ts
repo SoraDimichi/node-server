@@ -2,7 +2,7 @@ import { readdir } from "node:fs/promises";
 import { basename, join } from "node:path";
 import config, { type ApiOptions } from "./config";
 import { init } from "./db";
-import log from "./logger";
+import logger from "./logger";
 import staticServer from "./static";
 import store from "./transport";
 
@@ -24,7 +24,7 @@ const server = async (options: ApiOptions, logger: any) => {
 };
 
 void (async (options) => {
-  const l = log(options.logger);
+  const l = logger[options.logger];
   await server(options.api, l);
   staticServer(options.static, l);
 })(config);

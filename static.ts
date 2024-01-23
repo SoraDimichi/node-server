@@ -22,7 +22,7 @@ const serveStatic = (config: StaticOptions, logger: any): void => {
     })
     .listen(port);
 
-  logger.log(`Static on port ${port}`);
+  logger.info(`Static on port ${port}`);
 };
 
 export default serveStatic;

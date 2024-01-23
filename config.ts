@@ -16,24 +16,10 @@ const config: AppOptions = {
     port: Number(process.env.STAT_PORT),
     root: "static",
   },
-  logger: {
-    out: "log",
-    colors: {
-      info: "\x1b[1;37m",
-      debug: "\x1b[1;33m",
-      error: "\x1b[0;31m",
-      system: "\x1b[1;34m",
-      access: "\x1b[1;38m",
-    },
-    datetimeLength: 19,
-  },
+  logger: process.env.LOGGER,
 } as const;
 
-export type LoggerOptions = {
-  out: string;
-  colors: Record<string, string>;
-  datetimeLength: number;
-};
+export type LoggerOptions = "pino" | "console" | "logger";
 
 export type DatabaseOptions = {
   host: string;

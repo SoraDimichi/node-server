@@ -12,5 +12,6 @@ declare namespace NodeJS {
     TRANSPORT: "http" | "ws";
     POSTGRES_PASSWORD: string;
     POSTGRES_USER: string;
+    LOGGER: "logger" | "console" | "pino";
   };
 }

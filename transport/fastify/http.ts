@@ -49,7 +49,6 @@ const startServer = (routing: Routing, port: number, logger = console) => {
       });
     });
   });
-  console.log(routing);
   // Start server
   fastify.listen({ port, host: "0.0.0.0" }, (err, address) => {
     if (err != null) {
@@ -58,7 +57,7 @@ const startServer = (routing: Routing, port: number, logger = console) => {
     }
 
     console.log(address, port);
-    logger.log(`Server listening at ${address}`);
+    logger.info(`Server listening at ${address}`);
   });
 };
 

@@ -35,7 +35,7 @@ const startServer = (
           const json = JSON.stringify(args);
           const parameters = json.substring(1, json.length - 1);
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          logger.log(`${ip} ${name}.${method}(${parameters})`);
+          logger.info(`${ip} ${name}.${method}(${parameters})`);
           try {
             const result = await handler(...args);
             connection.socket.send(JSON.stringify(result as string), {
@@ -51,7 +51,7 @@ const startServer = (
   });
   void fastify.listen({ port, host: "0.0.0.0" });
 
-  logger.log(`API on port ${port}`);
+  logger.info(`API on port ${port}`);
 };
 
 export default startServer;

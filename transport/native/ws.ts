@@ -30,7 +30,7 @@ const startServer = (
         const json = JSON.stringify(args);
         const parameters = json.substring(1, json.length - 1);
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        logger.log(`${ip} ${name}.${method}(${parameters})`);
+        logger.info(`${ip} ${name}.${method}(${parameters})`);
         try {
           const result = await handler(...args);
           connection.send(JSON.stringify(result as string), { binary: false });
@@ -42,7 +42,7 @@ const startServer = (
     });
   });
 
-  logger.log(`API on port ${port}`);
+  logger.info(`API on port ${port}`);
 };
 
 export default startServer;

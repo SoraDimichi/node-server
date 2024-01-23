@@ -51,14 +51,14 @@ const startServer = (
         const args: any[] = [];
         if (signature.includes("(id")) args.push(id);
         if (signature.includes("{")) args.push(await receiveArgs(req));
-        logger.log(`${String(socket.remoteAddress)} ${method} ${url}`);
+        logger.info(`${String(socket.remoteAddress)} ${method} ${url}`);
         const result = await handler(...args);
         return res.end(JSON.stringify(result.rows));
       })();
     })
     .listen(port);
 
-  logger.log(`API on port ${port}`);
+  logger.info(`API on port ${port}`);
 };
 
 export default startServer;
